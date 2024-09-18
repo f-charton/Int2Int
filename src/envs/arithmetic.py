@@ -56,7 +56,7 @@ class ArithmeticEnvironment(object):
             tensor_dim =  1
             if self.operation in  ["fraction_add","fraction_product", "fraction_simplify"]:
                 self.output_encoder = encoders.NumberArray(params, 2, 'V', tensor_dim )
-            elif self.operation in ["fraction_round", "gcd", "fraction_determinant","modular_add","modular_mul"]:
+            elif self.operation in ["fraction_round", "gcd", "fraction_determinant","modular_add","modular_mul","elliptic"]:
                 self.output_encoder = encoders.PositionalInts(params.base)
             else: 
                 self.output_encoder = encoders.SymbolicInts(0, 1)
@@ -211,7 +211,7 @@ class ArithmeticEnvironment(object):
         Register environment parameters.
         """
         parser.add_argument(
-            "--operation", type=str, default="fraction_compare", help="Operation to perform"
+            "--operation", type=str, default="gcd", help="Operation to perform"
         )
         parser.add_argument(
             "--dim1", type=int, default=10, help="Lines of matrix"
