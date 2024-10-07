@@ -101,13 +101,13 @@ V2 + 1 24 + 16\t+ 16\n
 
 represents `GCD (1024, 16) = 16`, in base `1000`. Note that here `V2`, `1`, `24`, `16` are words/tokens.
 
-For an elliptic curve and its rank, I would have something like
+For an elliptic curve and if it has nontrivial rank, I would have something like `int[5]:range(2)`
 
 ```
-V5 + 0 + 1 + 2 - 3 104 = 5\t+ 1
+V5 + 0 - 1 + 0 - 84 375 258 - 298 283 918 238\t1
 ```
 
-The code is organised as follows: 
+The code is organised as follows:
 
 train.py is the main file, you run python train.py with some parameters, you can train from generated data (using envs/generators), generate and export data (setting --export_data to true), or train and test from external data (using train_data and test_data)
 
