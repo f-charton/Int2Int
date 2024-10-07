@@ -152,7 +152,10 @@ def init_distributed_mode(params):
 
     # set GPU device
     if not params.cpu:
-        torch.cuda.set_device(params.local_rank)
+        if params.local_gpu != -1:
+            torch.cuda.set_device(params.local_gpu)
+        else:
+            torch.cuda.set_device(params.local_rank)
 
     # initialize multi-GPU
     if params.multi_gpu:

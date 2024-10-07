@@ -71,7 +71,7 @@ def get_parser():
                         help="GELU initialization in FFN layers (else RELU)")
     parser.add_argument("--max_src_len", type=int, default=0,
                         help="Maximum number of tokens to consider in encoder output")
-    
+
     parser.add_argument("--norm_attention", type=bool_flag, default=False,
                         help="Normalize attention and train temperaturee in Transformer")
     parser.add_argument("--dropout", type=float, default=0,
@@ -138,7 +138,7 @@ def get_parser():
                         help="hidden dimension for lstm")
 
     # training parameters
-    parser.add_argument("--env_base_seed", type=int, default=0,
+    parser.add_argument("--env_base_seed", type=int, default=-1,
                         help="Base seed for environments (-1 to use timestamp seed)")
     parser.add_argument("--max_len", type=int, default=512,
                         help="Maximum sequences length")
@@ -173,7 +173,7 @@ def get_parser():
                         help="Export data and disable training.")
     parser.add_argument("--train_data", type=str, default="",
                         help="Load dataset from the disk")
-    
+
     parser.add_argument("--reload_size", type=int, default=-1,
                         help="Reloaded training set size (-1 for everything)")
     parser.add_argument("--batch_load", type=bool_flag, default=False,
@@ -227,13 +227,15 @@ def get_parser():
     # CPU / multi-gpu / multi-node
     parser.add_argument("--cpu", type=bool_flag, default=False,
                         help="Run on CPU")
+    parser.add_argument("--local_gpu", type=int, default=-1,
+                        help="Multi-GPU - Local GPU")
     parser.add_argument("--local_rank", type=int, default=-1,
-                        help="Multi-GPU - Local rank")
+                        help="Multi-GPU - Local rank for torch.distributed.launch")
     parser.add_argument("--master_port", type=int, default=-1,
                         help="Master port (for multi-node SLURM jobs)")
     parser.add_argument("--windows", type=bool_flag, default=False,
                         help="Windows version (no multiprocessing for eval)")
-    
+
     return parser
 
 
@@ -284,7 +286,7 @@ def main(params):
                 else:
                     trainer.enc_dec_step(task)
                 trainer.iter()
-        
+
         logger.info(f"Memory allocated:  {torch.cuda.memory_allocated(0)/(1024*1024):.2f}MB, reserved: {torch.cuda.memory_reserved(0)/(1024*1024):.2f}MB")
 
 
