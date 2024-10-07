@@ -259,7 +259,7 @@ class ArithmeticEnvironment(object):
         Register environment parameters.
         """
         parser.add_argument(
-            "--operation", type=str, default="gcd", help="Operation to perform"
+            "--operation", type=str, default="data", help="Operation to perform"
         )
         parser.add_argument(
             "--data_types", type=str, default="", help="Data type for input and out output separated by :, e.g. \"int[5]:range(2)\""
