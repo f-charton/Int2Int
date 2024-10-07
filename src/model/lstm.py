@@ -8,9 +8,9 @@
 from logging import getLogger
 # import math
 # import itertools
-import numpy as np
+# import numpy as np
 import torch
-from torch._C import _set_backcompat_keepdim_warn
+# from torch._C import _set_backcompat_keepdim_warn
 import torch.nn as nn
 import torch.nn.functional as F
 from .transformer import Embedding

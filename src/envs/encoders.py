@@ -40,7 +40,7 @@ class SymbolicInts(Encoder):
 
 class PositionalInts(Encoder):
     """
-    Single integers, in base params.base (positive base)
+    Single integers, in base params.base (positive base), with the sign
     """
     def __init__(self, base=10):
         super().__init__()

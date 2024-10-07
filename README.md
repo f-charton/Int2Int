@@ -83,18 +83,20 @@ Training and test examples are written, one per line, as sequence of tokens, sep
 for GCD (1024, 16) = 16, in base 1000. Note that here 1, 24, 16 are words/tokens. 
 
 I usually encode sequences of n integers by preceding it with the token Vn (V1, V2, V3...), so a better encoding of a GCD operation would be
+
 ```
 V2 + 1 24 + 16\tV1 + 16 
 ```
 
 for an elliptic curve and its rank, I would have something like
+
 ```
 V4 + 0 + 1 + 2 - 3 104\tV1 + 1
 ```
-
 
 The code is organised as follows: 
 
 train.py is the main file, you run python train.py with some parameters, you can train from generated data (using envs/generators), generate and export data (setting --export_data to true), or train and test from external data (using train_data and test_data)
 
 src/envs contain the math-specific code
+
