@@ -9,7 +9,7 @@ This is complete code for a sequence to sequence transformer, the goal is to tra
 One way to run it out of the box is to run (on an environment where you have pytorch and numpy installed): 
 
 ```
-python train.py --dump_path /some_path_on_your_computer/ --exp_name my_first_experiment --exp_id 1
+python train.py --dump_path /some_path_on_your_computer/ --exp_name my_first_experiment --exp_id 1 --operation "gcd"
 ```
 
 This should train a transformer to compute the GCD of integers, encoded in base 1000, generated on the fly (between 1 and a million). 
@@ -73,28 +73,43 @@ At the end of the peoch, the model exports a python dictionary containing detail
 
 ### Training from a data file
 
-Training and test files can be provided with the parameters: --train_data and --eval_data (setting --eval_size to -1 will cause the model to evaluate on all the eval data).
+Training and test files can be provided with the parameters: `--train_data` and `--eval_data` (setting `--eval_size` to `-1` will cause the model to evaluate on all the eval data).
 
-Training and test examples are written, one per line, as sequence of tokens, separated by whitespaces, the input and output being separated by a tab. For the GCD,  you might have something like
-
-```
-+ 1 24 + 16\t+ 16\n
-```
-for GCD (1024, 16) = 16, in base 1000. Note that here 1, 24, 16 are words/tokens. 
-
-I usually encode sequences of n integers by preceding it with the token Vn (V1, V2, V3...), so a better encoding of a GCD operation would be
-```
-V2 + 1 24 + 16\tV1 + 16 
-```
-
-for an elliptic curve and its rank, I would have something like
-```
-V4 + 0 + 1 + 2 - 3 104\tV1 + 1
-```
+Training and test examples are written, one per line, as sequence of tokens, separated by whitespaces, the input and output being separated by a tab.
 
 
-The code is organised as follows: 
+One specify the data type of the input and output, e.g.:  `--operation "data" --data_types '"int[5]:int"`
+
+The supported data types at the moment are:
+- `int` -- an integer
+
+   encoded as `p ad ... a0` where `p` in `{+, -}` and `ai` are the digits of `a` in base `1000` (by default), e.g., `-3500` is represented as `- 3 500`
+
+- `int[n]` -- an integer array of length
+
+  represented as `Vn z1 ... zn` where `zi` are represented as above
+
+- `range(a, b)` -- an integer in the range `{a,...,b-1}`
+
+purely represented as integer.
+
+For example, for `GCD` we would use `int[5]:int` where
+
+```
+V2 + 1 24 + 16\t+ 16\n
+```
+
+represents `GCD (1024, 16) = 16`, in base `1000`. Note that here `V2`, `1`, `24`, `16` are words/tokens.
+
+For an elliptic curve and if it has nontrivial rank, I would have something like `int[5]:range(2)`
+
+```
+V5 + 0 - 1 + 0 - 84 375 258 - 298 283 918 238\t1
+```
+
+The code is organised as follows:
 
 train.py is the main file, you run python train.py with some parameters, you can train from generated data (using envs/generators), generate and export data (setting --export_data to true), or train and test from external data (using train_data and test_data)
 
 src/envs contain the math-specific code
+

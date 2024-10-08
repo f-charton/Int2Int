@@ -7,10 +7,8 @@
 
 from logging import getLogger
 from collections import OrderedDict
-from concurrent.futures import ProcessPoolExecutor
 import os
 import torch
-import numpy as np
 
 from .utils import to_cuda
 

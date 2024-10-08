@@ -9,7 +9,6 @@ from logging import getLogger
 import os
 import io
 import sys
-import math
 import numpy as np
 
 
