@@ -85,13 +85,37 @@ The supported data types at the moment are:
 
    encoded as `p ad ... a0` where `p` in `{+, -}` and `ai` are the digits of `a` in base `1000` (by default), e.g., `-3500` is represented as `- 3 500`
 
+
 - `int[n]` -- an integer array of length
 
-  represented as `Vn z1 ... zn` where `zi` are represented as above
+  represented as `Vn z1 ... zn` where `zi` are encoded as above
 
 - `range(a, b)` -- an integer in the range `{a,...,b-1}`
 
-purely represented as integer.
+encoded as a string in base 10, e.g., via `1101`.
+
+For example, here are some python functions to encode the above data types, respectively:
+
+```python3
+def encode_integer(val, base=1000, digit_sep=" "):
+    if val == 0:
+        return '+ 0'
+    sgn = '+' if val >= 0 else '-'
+    val = abs(val)
+    r = []
+    while val > 0:
+        r.append(str(val % base))
+        val = val//base
+    r.append(sgn)
+    r.reverse()
+    return digit_sep.join(r)
+   
+def encode_integer_array(x, base=1000):
+    return f'V{len(x)} ' + " ".join(encode_integer(int(z), base) for z in x)
+    
+def encode_range(x):
+    return str(int(x))
+```
 
 For example, for `GCD` we would use `int[5]:int` where
 
