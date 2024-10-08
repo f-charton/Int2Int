@@ -2,17 +2,17 @@
 
 ## Integer sequence to integer sequence translator
 
-This is complete code for a sequence to sequence transformer, the goal is to train it (supervisedly) to translate short sequences of integers into short sequences of integers. 
+This is complete code for a sequence to sequence transformer, the goal is to train it (supervisedly) to translate short sequences of integers into short sequences of integers.
 
-### My first experiment 
+### My first experiment
 
-One way to run it out of the box is to run (on an environment where you have pytorch and numpy installed): 
+One way to run it out of the box is to run (on an environment where you have pytorch and numpy installed):
 
 ```
 python train.py --dump_path /some_path_on_your_computer/ --exp_name my_first_experiment --exp_id 1 --operation "gcd"
 ```
 
-This should train a transformer to compute the GCD of integers, encoded in base 1000, generated on the fly (between 1 and a million). 
+This should train a transformer to compute the GCD of integers, encoded in base 1000, generated on the fly (between 1 and a million).
 
 You can try other operations with the parameter --operation : modular_add, modular_mul, fraction_compare, fraction_add, fraction_simplify, matrix_rank...
 
@@ -27,7 +27,7 @@ If you don't have a NVIDIA GPU, you can train on CPU by stating --cpu true (it w
 
 ### Running my first experiment
 
-If everything goes fine, the log should appear on the screen. It will also be saved in  
+If everything goes fine, the log should appear on the screen. It will also be saved in
 
 > /some_path_on_your_computer/my_first_experiment/1/train.log
 
@@ -44,14 +44,14 @@ INFO - 09/18/24 20:41:18 - 0:00:30 -     800 -  955.94 equations/s -  9558.79 wo
 Training losses are logged every 200 optimization steps (this is configurable, in trainer.py), here, you see it going down 0.55 to 0.42 to 0.37. Life is good!
 The eq/s and words/s give an idea of the learning speed, eqs are examples: here with 950 examples / s you expect to complete a 300k example epoch in a little more than 6 minutes (we are on a GPU).
 
-At the end of each epoch, the model runs test on a sample of size --eval_size (10k by default, you can make this smaller), examples are evaluated in batches of --batch_size_eval. During evaluation, the lines 
+At the end of each epoch, the model runs test on a sample of size --eval_size (10k by default, you can make this smaller), examples are evaluated in batches of --batch_size_eval. During evaluation, the lines
 
 ```
 INFO - 09/18/24 20:57:28 - 0:16:39 - (7168/10000) Found 102/128 valid top-1 predictions. Generating solutions ...
 INFO - 09/18/24 20:57:28 - 0:16:39 -     Found 102/128 solutions in beam hypotheses.
 ```
 
-indicate how many solutions were correct in each eval batch (here 102 our of 128). At the end, you should have a small report saying : 
+indicate how many solutions were correct in each eval batch (here 102 our of 128). At the end, you should have a small report saying :
 
 ```
 INFO - 09/18/24 20:57:29 - 0:16:40 - 8459/10000 (84.59%) equations were evaluated correctly.
@@ -109,15 +109,15 @@ def encode_integer(val, base=1000, digit_sep=" "):
     r.append(sgn)
     r.reverse()
     return digit_sep.join(r)
-   
+
 def encode_integer_array(x, base=1000):
     return f'V{len(x)} ' + " ".join(encode_integer(int(z), base) for z in x)
-    
+
 def encode_range(x):
     return str(int(x))
 ```
 
-For example, for `GCD` we would use `int[5]:int` where
+For example, for `GCD` we would use `int[2]:int` where
 
 ```
 V2 + 1 24 + 16\t+ 16\n
