@@ -172,7 +172,7 @@ class Trainer(object):
             or params.amp in [1, 2, 3]
             and params.fp16 is True
         )
-        mod_names = sorted(self.modules.keys())
+        # mod_names = sorted(self.modules.keys()) # unused
         self.scaler = torch.cuda.amp.GradScaler()
 
     def optimize(self, loss):
